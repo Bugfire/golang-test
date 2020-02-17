@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   docker: circleci/docker@0.5.20
-  slack: circleci/slack@2.3.0
+  slack: circleci/slack@3.4.2
 
 jobs:
   build:
@@ -11,6 +11,10 @@ jobs:
       - checkout
       - docker/build:
           image: bugfire/golang-test
+      - slack/status:
+          success_message: ':pen_good: $CIRCLE_BRANCH のビルドに成功しました'
+          failure_message: ':pen_naki: $CIRCLE_BRANCH のビルドに失敗しました'
+          webhook: '${SLACK_WEBHOOK}'
   deploy:
     executor: docker/machine
     steps:
