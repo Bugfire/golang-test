@@ -9,14 +9,12 @@ jobs:
     executor: docker/machine
     steps:
       - checkout
-      - docker/check
       - docker/build:
           image: bugfire/golang-test
   deploy:
     executor: docker/machine
     steps:
       - checkout
-      - docker/check
       - docker/build:
           image: bugfire/golang-test
       - run:
@@ -34,7 +32,7 @@ workflows:
     jobs:
       - deploy:
         filters:
-          bracnhes:
+          branches:
             ignore: /.*/
           tags:
             only: /v[0-9]+(\.[0-9]+)*/
