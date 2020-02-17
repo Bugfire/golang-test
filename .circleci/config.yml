@@ -1,4 +1,5 @@
 version: 2.1
+
 orbs:
   docker: circleci/docker@0.5.20
   slack: circleci/slack@2.3.0
@@ -17,9 +18,6 @@ jobs:
       - checkout
       - docker/check
       - docker/build:
-          image: bugfire/golang-test
-      - docker/push:
-          digest-path: /tmp/digest.txt
           image: bugfire/golang-test
       - run:
           command: |
