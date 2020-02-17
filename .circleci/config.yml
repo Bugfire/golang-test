@@ -10,20 +10,20 @@ jobs:
       - checkout
       - docker/check
       - docker/build:
-        image: bugfire/golang-test
+          image: bugfire/golang-test
   deploy:
     executor: docker/machine
     steps:
       - checkout
       - docker/check
       - docker/build:
-        image: bugfire/golang-test
+          image: bugfire/golang-test
       - docker/push:
-        digest-path: /tmp/digest.txt
-        image: bugfire/golang-test
+          digest-path: /tmp/digest.txt
+          image: bugfire/golang-test
       - run:
-        command: |
-          echo "Digest is $(</tmp/digest.txt)"
+          command: |
+            echo "Digest is $(</tmp/digest.txt)"
 
 workflows:
   commit:
