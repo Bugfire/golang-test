@@ -1,0 +1,42 @@
+version: 2.1
+orbs:
+  docker: circleci/docker@0.5.20
+  slack: circleci/slack@2.3.0
+
+jobs:
+  build:
+    executor: docker/machine
+    steps:
+      - checkout
+      - docker/check
+      - docker/build:
+        image: bugfire/golang-test
+  deploy:
+    executor: docker/machine
+    steps:
+      - checkout
+      - docker/check
+      - docker/build:
+        image: bugfire/golang-test
+      - docker/push:
+        digest-path: /tmp/digest.txt
+        image: bugfire/golang-test
+      - run:
+        command: |
+          echo "Digest is $(</tmp/digest.txt)"
+
+workflows:
+  commit:
+    jobs:
+      - build:
+        filters:
+          branches:
+            only: /.*/
+  deploy:
+    jobs:
+      - deploy:
+        filters:
+          bracnhes:
+            ignore: /.*/
+          tags:
+            only: /v[0-9]+(\.[0-9]+)*/
